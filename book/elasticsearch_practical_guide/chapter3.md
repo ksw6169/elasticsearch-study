@@ -13,19 +13,19 @@
 **동적 매핑의 단점**
 
 ```
-# doc 1
+# doc_1
 {
-	"create_date":"20201126"
+  "create_date":"20201126"
 }
 
-# doc 2
+# doc_2
 {
-	"create_date":"test date"
+  "create_date":"test date"
 }
 ```
 
-- doc 1에서 create_date 필드에 대한 데이터를 색인하면 데이터 타입은 숫자 타입으로 매핑되는데, doc 2에서 text 타입의 데이터를 색인하려고 하면 색인에 실패한다. date 타입의 필드에 text 타입의 데이터를 색인하려고 했기 때문이다. 한번 정의된 필드의 타입은 변경할 수 없기 때문에 create_date 필드에 대한 데이터 타입은 인덱스를 재생성하거나 매핑을 다시 정의하지 않는 한 수정될 수 없다. 
-- 이 밖에도 동적 매핑은 여러 단점을 내포하고 있다. 따라서 사용을 지양해야 한다.
+- `doc_1`에서 create_date 필드에 대한 데이터를 색인하면 데이터 타입은 숫자 타입으로 매핑되는데, `doc_2`에서 text 타입의 데이터를 색인하려고 하면 색인에 실패한다. date 타입의 필드에 text 타입의 데이터를 색인하려고 했기 때문이다. 한번 정의된 필드의 타입은 변경할 수 없기 때문에 create_date 필드에 대한 데이터 타입은 인덱스를 재생성하거나 매핑을 다시 정의하지 않는 한 수정될 수 없다. 
+- 이 밖에도 동적 매핑은 여러 단점을 내포하고 있기 때문에 사용을 지양해야 한다.
 
 <br>
 
@@ -59,11 +59,19 @@ PUT test_index
 ```
 
 - `settings` : 인덱스에 대한 설정
-  - number_of_shards : Primary shard 수 지정
-  - number_of_replicas : Replica shard 세트 수 지정
+  - `number_of_shards` : Primary shard 수 지정 (ES 7.0부터 default : 1)
+  - `number_of_replicas` : Replica shard 세트 수 지정 (default : 1)
 
 - `mappings.properties` : 필드에 대한 설정
-  - 필드명과 type(필드의 데이터 타입), analyzer(값 분석 시 사용할 분석기) 등을 지정할 수 있음
+  - 필드명과 type(필드의 데이터 타입), analyzer(데이터 색인, 검색 시 사용할 분석기) 등을 지정할 수 있음
+
+<br>
+
+**인덱스의 세팅 확인 쿼리**
+
+```
+GET test_index/_settings
+```
 
 <br>
 
@@ -81,7 +89,7 @@ GET test_index/_mapping
 
 - `analyzer` : 색인, 검색 시 필드의 데이터를 분석할 분석기를 지정하는 옵션
 
-  - `analyzer ` 는 사전에 제공되는 analyzer도 있고, 사용자 정의하여 사용할 수도 있다.
+  - `analyzer` 는 사전에 제공되는 analyzer도 있고, 사용자 정의하여 사용할 수도 있다.
 
   - `text` 데이터 타입은 analyzer를 별도로 지정하지 않을 경우 `standard analyzer`로 지정된다.
 
